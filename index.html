@@ -1,0 +1,339 @@
+<!-- umami/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UmamiQuest — Flavor & Atmosphere</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --gold: #C9A96E; --burgundy: #6B1D1D; --charcoal: #1C1C1C;
+            --warm-gray: #2A2A28; --cream: #F5F0E8; --ivory: #FDFBF7;
+            --muted: #7A7A70; --text: #3D3D3D;
+        }
+        body { font-family: 'Outfit', sans-serif; background: var(--ivory); color: var(--text); }
+
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            padding: 20px 60px; display: flex; justify-content: space-between;
+            align-items: center; background: rgba(28,28,28,0.95);
+            backdrop-filter: blur(20px);
+        }
+        .logo { text-decoration: none; display: flex; align-items: center; gap: 10px; }
+        .logo-symbol { font-size: 28px; }
+        .logo-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 28px; font-weight: 700; color: var(--gold);
+            letter-spacing: 2px;
+        }
+        .nav-links { display: flex; gap: 40px; list-style: none; }
+        .nav-links a { text-decoration: none; color: rgba(255,255,255,0.5); font-size: 14px; font-weight: 400; letter-spacing: 1px; transition: color 0.3s; text-transform: uppercase; }
+        .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+        .btn-reserve {
+            padding: 12px 30px; border: 1px solid var(--gold); color: var(--gold);
+            background: transparent; border-radius: 0; font-size: 13px; letter-spacing: 2px;
+            text-transform: uppercase; cursor: pointer; text-decoration: none;
+            transition: all 0.3s; font-family: 'Outfit', sans-serif;
+        }
+        .btn-reserve:hover { background: var(--gold); color: var(--charcoal); }
+
+        /* HERO */
+        .hero {
+            min-height: 100vh;
+            background: var(--charcoal);
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; padding: 100px 60px;
+            position: relative; overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(201,169,110,0.08), transparent 70%);
+        }
+        .hero-content { position: relative; z-index: 2; }
+        .hero-divider {
+            width: 60px; height: 1px; background: var(--gold); margin: 0 auto 24px;
+        }
+        .hero-sub {
+            font-size: 13px; text-transform: uppercase; letter-spacing: 6px;
+            color: var(--gold); margin-bottom: 20px;
+        }
+        .hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 80px; font-weight: 400; color: white;
+            line-height: 1.1; margin-bottom: 24px;
+        }
+        .hero h1 em { font-style: italic; color: var(--gold); }
+        .hero p {
+            font-size: 17px; color: rgba(255,255,255,0.5); max-width: 500px;
+            margin: 0 auto 40px; line-height: 1.7;
+        }
+        .hero-buttons { display: flex; gap: 20px; justify-content: center; }
+        .btn-gold {
+            padding: 16px 44px; background: var(--gold); color: var(--charcoal);
+            border: none; font-size: 13px; letter-spacing: 2px;
+            text-transform: uppercase; cursor: pointer; text-decoration: none;
+            transition: all 0.3s; font-weight: 600; font-family: 'Outfit', sans-serif;
+        }
+        .btn-gold:hover { background: #B8944D; transform: translateY(-2px); }
+        .btn-outline-gold {
+            padding: 16px 44px; background: transparent; color: var(--gold);
+            border: 1px solid var(--gold); font-size: 13px; letter-spacing: 2px;
+            text-transform: uppercase; cursor: pointer; text-decoration: none;
+            transition: all 0.3s; font-family: 'Outfit', sans-serif;
+        }
+        .btn-outline-gold:hover { background: var(--gold); color: var(--charcoal); }
+
+        /* PHILOSOPHY */
+        .philosophy {
+            padding: 120px 60px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+        .philosophy-text {}
+        .section-label {
+            font-size: 12px; text-transform: uppercase; letter-spacing: 4px;
+            color: var(--gold); margin-bottom: 16px;
+        }
+        .philosophy h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 44px; font-weight: 500; color: var(--charcoal);
+            margin-bottom: 20px; line-height: 1.2;
+        }
+        .philosophy p {
+            color: var(--muted); line-height: 1.8; font-size: 16px; margin-bottom: 16px;
+        }
+        .philosophy-image {
+            height: 500px;
+            background: linear-gradient(145deg, var(--warm-gray), var(--charcoal));
+            border-radius: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 120px;
+        }
+
+        /* SIGNATURE DISHES */
+        .section { padding: 100px 60px; }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 48px; font-weight: 500; color: var(--charcoal);
+        }
+        .menu-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px;
+        }
+        .dish-card {
+            background: white; overflow: hidden;
+            transition: all 0.4s; cursor: pointer; text-decoration: none;
+            color: var(--text); box-shadow: 0 2px 20px rgba(0,0,0,0.04);
+        }
+        .dish-card:hover { transform: translateY(-6px); box-shadow: 0 15px 40px rgba(0,0,0,0.08); }
+        .dish-image {
+            height: 280px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 80px; position: relative;
+        }
+        .dish-image.sushi { background: linear-gradient(135deg, #2C3E50, #1A1A2E); }
+        .dish-image.wagyu { background: linear-gradient(135deg, #6B1D1D, #3D0000); }
+        .dish-image.truffle { background: linear-gradient(135deg, #4A4A3A, #2A2A20); }
+        .dish-image.lobster { background: linear-gradient(135deg, #C0392B, #7B1818); }
+        .dish-image.dessert { background: linear-gradient(135deg, #C9A96E, #8B6914); }
+        .dish-image.ramen { background: linear-gradient(135deg, #F39C12, #D35400); }
+
+        .dish-info { padding: 30px; }
+        .dish-cuisine { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); margin-bottom: 6px; }
+        .dish-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px; font-weight: 600; color: var(--charcoal); margin-bottom: 8px;
+        }
+        .dish-desc { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 14px; }
+        .dish-price { font-size: 20px; font-weight: 700; color: var(--charcoal); }
+
+        /* AMBIENCE */
+        .ambience-section {
+            background: var(--charcoal);
+            padding: 100px 60px;
+            text-align: center;
+        }
+        .ambience-section .section-label { color: var(--gold); }
+        .ambience-section h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 48px; color: white; margin-bottom: 60px;
+        }
+        .ambience-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+        }
+        .ambience-card {
+            height: 200px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 60px;
+            border: 1px solid rgba(201,169,110,0.2);
+            transition: all 0.3s; cursor: pointer;
+        }
+        .ambience-card:hover {
+            border-color: var(--gold);
+            background: rgba(201,169,110,0.05);
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--charcoal);
+            padding: 80px 60px 40px;
+            color: white;
+            border-top: 1px solid rgba(201,169,110,0.15);
+        }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 60px; }
+        .footer-brand p { color: rgba(255,255,255,0.4); font-size: 14px; line-height: 1.7; margin-top: 16px; }
+        .footer-col h4 { font-size: 12px; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 20px; color: var(--gold); }
+        .footer-col ul { list-style: none; }
+        .footer-col li { margin-bottom: 10px; }
+        .footer-col a { color: rgba(255,255,255,0.4); text-decoration: none; font-size: 14px; transition: color 0.3s; }
+        .footer-col a:hover { color: var(--gold); }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.05); padding-top: 30px; text-align: center; color: rgba(255,255,255,0.3); font-size: 13px; }
+
+        @media (max-width: 1024px) {
+            .philosophy { grid-template-columns: 1fr; gap: 40px; }
+            .menu-grid { grid-template-columns: repeat(2, 1fr); }
+            .ambience-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            nav { padding: 16px 20px; } .nav-links { display: none; }
+            .hero { padding: 120px 20px; }
+            .hero h1 { font-size: 44px; }
+            .philosophy { padding: 60px 20px; }
+            .section { padding: 60px 20px; }
+            .section-title { font-size: 36px; }
+            .menu-grid, .ambience-grid { grid-template-columns: 1fr; }
+            .ambience-section { padding: 60px 20px; }
+            .hero-buttons { flex-direction: column; align-items: center; }
+            footer { padding: 60px 20px 30px; }
+            .footer-grid { grid-template-columns: 1fr; gap: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">
+            <span class="logo-symbol">🍜</span>
+            <span class="logo-text">UmamiQuest</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="products.html">Menu</a></li>
+            <li><a href="product.html">Experiences</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+        <a href="product.html" class="btn-reserve">Reserve</a>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-sub">A Culinary Journey</div>
+            <div class="hero-divider"></div>
+            <h1>Where Flavor Meets <em>Art</em></h1>
+            <p>An exquisite dining experience that celebrates the fifth taste. Every dish tells a story, every moment unfolds a memory.</p>
+            <div class="hero-buttons">
+                <a href="products.html" class="btn-gold">Explore Menu</a>
+                <a href="product.html" class="btn-outline-gold">Book a Table</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="philosophy">
+        <div class="philosophy-text">
+            <div class="section-label">Our Philosophy</div>
+            <h2>The Art of Umami</h2>
+            <p>At UmamiQuest, we believe in the power of the fifth taste — the deep, savory essence that transforms a meal into an experience. Our kitchen is led by Chef Hiroshi Tanaka, who brings 30 years of mastery to every plate.</p>
+            <p>We source the finest ingredients from around the globe: A5 Wagyu from Kobe, black truffles from Périgord, and seafood delivered fresh from Tsukiji each morning.</p>
+        </div>
+        <div class="philosophy-image">👨‍🍳</div>
+    </section>
+
+    <section class="section">
+        <div class="section-header">
+            <div class="section-label">The Menu</div>
+            <h2 class="section-title">Signature Creations</h2>
+        </div>
+        <div class="menu-grid">
+            <a href="product.html" class="dish-card">
+                <div class="dish-image sushi">🍣</div>
+                <div class="dish-info">
+                    <div class="dish-cuisine">Japanese</div>
+                    <div class="dish-name">Omakase Selection</div>
+                    <div class="dish-desc">12-piece chef's selection of the finest nigiri and sashimi.</div>
+                    <div class="dish-price">$145</div>
+                </div>
+            </a>
+            <a href="product.html" class="dish-card">
+                <div class="dish-image wagyu">🥩</div>
+                <div class="dish-info">
+                    <div class="dish-cuisine">Contemporary</div>
+                    <div class="dish-name">A5 Wagyu Tataki</div>
+                    <div class="dish-desc">Seared Kobe beef with ponzu, micro greens, and truffle oil.</div>
+                    <div class="dish-price">$185</div>
+                </div>
+            </a>
+            <a href="product.html" class="dish-card">
+                <div class="dish-image truffle">🍝</div>
+                <div class="dish-info">
+                    <div class="dish-cuisine">Italian-Japanese Fusion</div>
+                    <div class="dish-name">Black Truffle Udon</div>
+                    <div class="dish-desc">Hand-pulled udon in dashi broth with shaved Périgord truffles.</div>
+                    <div class="dish-price">$78</div>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <section class="ambience-section">
+        <div class="section-label">The Space</div>
+        <h2>An Atmosphere Like No Other</h2>
+        <div class="ambience-grid">
+            <div class="ambience-card">🕯️</div>
+            <div class="ambience-card">🎋</div>
+            <div class="ambience-card">🪵</div>
+            <div class="ambience-card">🎵</div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <a href="index.html" class="logo"><span class="logo-symbol">🍜</span><span class="logo-text">UmamiQuest</span></a>
+                <p>Where culinary artistry meets the warmth of hospitality. Located in the heart of the city.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Visit</h4>
+                <ul>
+                    <li><a href="#">123 Flavor Street</a></li>
+                    <li><a href="#">Open Tue—Sun</a></li>
+                    <li><a href="#">6:00 PM — 11:00 PM</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Menu</h4>
+                <ul>
+                    <li><a href="products.html">Full Menu</a></li>
+                    <li><a href="#">Wine List</a></li>
+                    <li><a href="#">Omakase</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <ul>
+                    <li><a href="#">+1 (555) 987-6543</a></li>
+                    <li><a href="#">hello@umamiquest.com</a></li>
+                    <li><a href="#">Instagram</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">© 2025 UmamiQuest. All rights reserved.</div>
+    </footer>
+</body>
+</html>
