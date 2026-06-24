@@ -1,0 +1,210 @@
+<!-- umamiquast/menu.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu - UmamiQuest</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700;800&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --burgundy: #8B1A2B; --gold: #C9A96E; --gold-light: #E2C992; --charcoal: #1C1C1C; --charcoal-2: #2A2A2A; --cream: #F5F0E8; --text: #EDEDED; --text-muted: #999; }
+        body { font-family: 'Montserrat', sans-serif; background: var(--charcoal); color: var(--text); }
+
+        nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 15px 0; background: rgba(28,28,28,0.95); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(201,169,110,0.1); }
+        .nav-container { max-width: 1200px; margin: 0 auto; padding: 0 30px; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 700; text-decoration: none; color: var(--gold); }
+        .logo span { color: var(--text); font-weight: 400; }
+        .nav-links { display: flex; list-style: none; gap: 30px; align-items: center; }
+        .nav-links a { text-decoration: none; color: rgba(255,255,255,0.7); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; }
+        .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+        .btn-reserve { padding: 12px 30px !important; border: 1px solid var(--gold) !important; color: var(--gold) !important; }
+        .mobile-toggle { display: none; cursor: pointer; flex-direction: column; gap: 6px; }
+        .mobile-toggle span { width: 28px; height: 1px; background: var(--gold); }
+
+        .section-container { max-width: 1200px; margin: 0 auto; padding: 0 30px; }
+
+        .page-header {
+            padding: 140px 0 60px; text-align: center;
+            background: linear-gradient(135deg, var(--burgundy), var(--charcoal));
+        }
+        .page-header .divider { width: 40px; height: 1px; background: var(--gold); margin: 0 auto 15px; }
+        .page-header .tag { font-size: 12px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 15px; }
+        .page-header h1 { font-family: 'Cormorant Garamond', serif; font-size: 56px; font-weight: 700; color: white; }
+        .page-header p { color: rgba(255,255,255,0.6); margin-top: 10px; font-size: 16px; }
+
+        .menu-cats { display: flex; justify-content: center; gap: 10px; padding: 40px 0; flex-wrap: wrap; }
+        .m-cat {
+            padding: 10px 25px; border: 1px solid rgba(201,169,110,0.2); background: transparent;
+            color: var(--text-muted); font-size: 12px; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 1.5px; cursor: pointer; transition: 0.3s;
+        }
+        .m-cat.active, .m-cat:hover { background: var(--gold); color: var(--charcoal); border-color: var(--gold); }
+
+        .menu-full-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; padding-bottom: 100px; }
+        .mf-card {
+            background: var(--charcoal-2); border: 1px solid rgba(201,169,110,0.1);
+            overflow: hidden; transition: 0.4s; text-decoration: none; color: var(--text);
+        }
+        .mf-card:hover { transform: translateY(-5px); border-color: rgba(201,169,110,0.3); }
+        .mf-img { height: 240px; overflow: hidden; position: relative; }
+        .mf-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
+        .mf-card:hover .mf-img img { transform: scale(1.08); }
+        .mf-badge { position: absolute; top: 12px; right: 12px; padding: 5px 12px; background: var(--burgundy); color: white; font-size: 10px; font-weight: 700; text-transform: uppercase; }
+        .mf-info { padding: 22px; }
+        .mf-info .cat { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+        .mf-info h3 { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 600; margin-bottom: 8px; }
+        .mf-info p { font-size: 13px; color: var(--text-muted); margin-bottom: 15px; line-height: 1.5; }
+        .mf-footer { display: flex; justify-content: space-between; align-items: center; }
+        .mf-price { font-size: 22px; font-weight: 700; color: var(--gold); }
+        .mf-btn { padding: 8px 20px; background: transparent; border: 1px solid rgba(201,169,110,0.3); color: var(--gold); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: 0.3s; }
+        .mf-btn:hover { background: var(--gold); color: var(--charcoal); }
+
+        footer { background: var(--charcoal-2); border-top: 1px solid rgba(201,169,110,0.1); padding: 40px 0; text-align: center; }
+        footer p { color: var(--text-muted); font-size: 12px; }
+
+        @media (max-width: 1024px) { .menu-full-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) {
+            .nav-links { display: none; } .mobile-toggle { display: flex; }
+            .page-header h1 { font-size: 36px; }
+            .menu-full-grid { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">Umami<span>Quest</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="menu.html" class="active">Menu</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Gallery</a></li>
+                <li><a href="dish-detail.html" class="btn-reserve">Reserve</a></li>
+            </ul>
+            <div class="mobile-toggle"><span></span><span></span><span></span></div>
+        </div>
+    </nav>
+
+    <section class="page-header">
+        <div class="section-container">
+            <div class="divider"></div>
+            <div class="tag">Culinary Excellence</div>
+            <h1>Our Menu</h1>
+            <p>A curated selection of flavors from around the world</p>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-container">
+            <div class="menu-cats">
+                <button class="m-cat active">All</button>
+                <button class="m-cat">Starters</button>
+                <button class="m-cat">Main Course</button>
+                <button class="m-cat">Seafood</button>
+                <button class="m-cat">Pasta</button>
+                <button class="m-cat">Desserts</button>
+                <button class="m-cat">Beverages</button>
+            </div>
+
+            <div class="menu-full-grid">
+                <a href="dish-detail.html" class="mf-card">
+                    <div class="mf-img"><img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&h=350&fit=crop" alt=""><div class="mf-badge">Chef's Pick</div></div>
+                    <div class="mf-info">
+                        <div class="cat">Main Course</div>
+                        <h3>Wagyu Beef Tenderloin</h3>
+                        <p>Truffle mashed potatoes, asparagus, red wine reduction</p>
+                        <div class="mf-footer"><span class="mf-price">PKR 5,800</span><button class="mf-btn">View</button></div>
+                    </div>
+                </a>
+                <a href="dish-detail.html" class="mf-card">
+                    <div class="mf-img"><img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=500&h=350&fit=crop" alt=""><div class="mf-badge">Popular</div></div>
+                    <div class="mf-info">
+                        <div class="cat">Italian</div>
+                        <h3>Truffle Quattro Formaggi</h3>
+                        <p>Hand-tossed dough, four cheese blend, black truffle oil</p>
+                        <div class="mf-footer"><span class="mf-price">PKR 3,200</span><button class="mf-btn">View</button></div>
+                    </div>
+                </a>
+                <a href="dish-detail.html" class="mf-card">
+                    <div class="mf-img"><img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=500&h=350&fit=crop" alt=""></div>
+                    <div class="mf-info">
+                        <div class="cat">Dessert</div>
+                        <h3>Golden Stack Pancakes</h3>
+                        <p>Ricotta pancakes, maple glaze, fresh berries, cream</p>
+                        <div class="mf-footer"><span class="mf-price">PKR 1,800</span><button class="mf-btn">View</button></div>
+                    </div>
+                </a>
+                <a href="dish-detail.html" class="mf-card">
+                    <div class="mf-img"><img src="https://images.unsplash.com/photo-1432139509613-5c4255a1d277?w=500&h=350&fit=crop" alt=""></div>
+                    <div class="mf-info">
+                        <div class="cat">Seafood</div>
+                        <h3>Pan-Seared Salmon</h3>
+                        <p>Citrus butter, roasted vegetables, herb quinoa</p>
+                        <div class="mf-footer"><span class="mf-price">PKR 4,500</span><button class="mf-btn">View</button></div>
+                    </div>
+                </a>
+                <a href="dish-detail.html" class="mf-card">
+                    <div class="mf-img"><img src="https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=500&h=350&fit=crop" alt=""><div class="mf-badge">New</div></div>
+                    <div class="mf-info">
+                        <div class="cat">Pasta</div>
+                        <h3>Lobster Linguine</h3>
+                        <p>Fresh lobster, cherry tomatoes, garlic white wine sauce</p>
+                        <div class="mf-footer"><span class="mf-price">PKR 4,200</span><button class="mf-btn">View</button></div>
+                    </div>
+                </a>
+                <a href="dish-detail.html" class="mf-card">
+                    <div class="mf-img"><img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=500&h=350&fit=crop" alt=""></div>
+                    <div class="mf-info">
+                        <div class="cat">Dessert</div>
+                        <h3>Chocolate Lava Cake</h3>
+                        <p>Valrhona dark chocolate, vanilla ice cream, berry coulis</p>
+                        <div class="mf-footer"><span class="mf-price">PKR 1,500</span><button class="mf-btn">View</button></div>
+                    </div>
+                </a>
+                <a href="dish-detail.html" class="mf-card">
+                    <div class="mf-img"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=500&h=350&fit=crop" alt=""></div>
+                    <div class="mf-info">
+                        <div class="cat">Starters</div>
+                        <h3>Grilled Mediterranean Platter</h3>
+                        <p>Mixed grills, hummus, pita bread, garden salad</p>
+                        <div class="mf-footer"><span class="mf-price">PKR 2,800</span><button class="mf-btn">View</button></div>
+                    </div>
+                </a>
+                <a href="dish-detail.html" class="mf-card">
+                    <div class="mf-img"><img src="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=500&h=350&fit=crop" alt=""></div>
+                    <div class="mf-info">
+                        <div class="cat">Burger</div>
+                        <h3>Angus Smash Burger</h3>
+                        <p>Double patty, aged cheddar, caramelized onions, brioche bun</p>
+                        <div class="mf-footer"><span class="mf-price">PKR 2,400</span><button class="mf-btn">View</button></div>
+                    </div>
+                </a>
+                <a href="dish-detail.html" class="mf-card">
+                    <div class="mf-img"><img src="https://images.unsplash.com/photo-1482049016688-2d3e1b311543?w=500&h=350&fit=crop" alt=""><div class="mf-badge">Seasonal</div></div>
+                    <div class="mf-info">
+                        <div class="cat">Starters</div>
+                        <h3>Bruschetta Trio</h3>
+                        <p>Tomato basil, mushroom truffle, smoked salmon on ciabatta</p>
+                        <div class="mf-footer"><span class="mf-price">PKR 1,600</span><button class="mf-btn">View</button></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="section-container"><p>© 2025 UmamiQuest. Crafted with love & flavor.</p></div>
+    </footer>
+
+    <script>
+        document.querySelectorAll('.m-cat').forEach(c => {
+            c.addEventListener('click', function() {
+                document.querySelectorAll('.m-cat').forEach(f => f.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
