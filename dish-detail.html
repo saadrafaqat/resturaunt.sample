@@ -1,0 +1,297 @@
+<!-- umamiquast/dish-detail.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wagyu Beef Tenderloin - UmamiQuest</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700;800&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --burgundy: #8B1A2B; --gold: #C9A96E; --gold-light: #E2C992; --charcoal: #1C1C1C; --charcoal-2: #2A2A2A; --charcoal-3: #333; --text: #EDEDED; --text-muted: #999; }
+        body { font-family: 'Montserrat', sans-serif; background: var(--charcoal); color: var(--text); }
+
+        nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 15px 0; background: rgba(28,28,28,0.95); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(201,169,110,0.1); }
+        .nav-container { max-width: 1200px; margin: 0 auto; padding: 0 30px; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 700; text-decoration: none; color: var(--gold); }
+        .logo span { color: var(--text); font-weight: 400; }
+        .nav-links { display: flex; list-style: none; gap: 30px; align-items: center; }
+        .nav-links a { text-decoration: none; color: rgba(255,255,255,0.7); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; }
+        .nav-links a:hover { color: var(--gold); }
+        .btn-reserve { padding: 12px 30px !important; border: 1px solid var(--gold) !important; color: var(--gold) !important; }
+        .mobile-toggle { display: none; cursor: pointer; flex-direction: column; gap: 6px; }
+        .mobile-toggle span { width: 28px; height: 1px; background: var(--gold); }
+
+        .section-container { max-width: 1200px; margin: 0 auto; padding: 0 30px; }
+
+        .breadcrumb-bar { padding: 95px 0 20px; }
+        .breadcrumb { font-size: 13px; color: var(--text-muted); }
+        .breadcrumb a { color: var(--gold); text-decoration: none; }
+
+        /* Dish Detail */
+        .dish-detail { padding: 20px 0 80px; }
+        .dish-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+        .dish-gallery {}
+        .dish-main-img {
+            width: 100%; height: 500px; overflow: hidden; margin-bottom: 12px;
+            border: 1px solid rgba(201,169,110,0.1);
+        }
+        .dish-main-img img { width: 100%; height: 100%; object-fit: cover; }
+        .dish-thumbs { display: flex; gap: 10px; }
+        .dish-thumb {
+            width: 100px; height: 80px; overflow: hidden; cursor: pointer;
+            border: 2px solid rgba(201,169,110,0.1); transition: 0.3s;
+        }
+        .dish-thumb.active, .dish-thumb:hover { border-color: var(--gold); }
+        .dish-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+        .dish-info {}
+        .dish-cat { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); font-weight: 600; margin-bottom: 10px; }
+        .dish-title { font-family: 'Cormorant Garamond', serif; font-size: 42px; font-weight: 700; margin-bottom: 15px; line-height: 1.2; }
+        .dish-rating { display: flex; align-items: center; gap: 10px; margin-bottom: 25px; font-size: 14px; }
+        .dish-rating .stars { color: #FFC312; }
+        .dish-rating .count { color: var(--text-muted); }
+
+        .dish-price-box {
+            background: var(--charcoal-2); border: 1px solid rgba(201,169,110,0.15);
+            padding: 25px; margin-bottom: 25px;
+        }
+        .dish-price { font-size: 36px; font-weight: 800; color: var(--gold); }
+
+        .dish-description { color: var(--text-muted); font-size: 15px; line-height: 1.8; margin-bottom: 30px; }
+
+        .dish-details-list { margin-bottom: 30px; }
+        .dish-details-list h3 { font-family: 'Cormorant Garamond', serif; font-size: 24px; margin-bottom: 15px; color: white; }
+        .detail-row {
+            display: flex; justify-content: space-between; padding: 12px 0;
+            border-bottom: 1px solid rgba(201,169,110,0.08); font-size: 14px;
+        }
+        .detail-row span:first-child { color: var(--text-muted); }
+        .detail-row span:last-child { font-weight: 600; }
+
+        .dish-options { margin-bottom: 30px; }
+        .dish-options h3 { font-family: 'Cormorant Garamond', serif; font-size: 24px; margin-bottom: 15px; color: white; }
+        .option-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+        .opt-btn {
+            padding: 10px 22px; border: 1px solid rgba(201,169,110,0.2); background: transparent;
+            color: var(--text-muted); font-size: 13px; font-weight: 500; cursor: pointer; transition: 0.3s;
+        }
+        .opt-btn.active, .opt-btn:hover { background: var(--gold); color: var(--charcoal); border-color: var(--gold); }
+
+        .dish-qty { display: flex; align-items: center; gap: 0; margin-bottom: 25px; }
+        .qty-b {
+            width: 50px; height: 50px; background: var(--charcoal-2); border: 1px solid rgba(201,169,110,0.2);
+            color: var(--text); font-size: 18px; cursor: pointer; display: flex; align-items: center;
+            justify-content: center; transition: 0.3s;
+        }
+        .qty-b:hover { background: var(--gold); color: var(--charcoal); }
+        .qty-i {
+            width: 60px; height: 50px; background: var(--charcoal-3); border: 1px solid rgba(201,169,110,0.2);
+            border-left: none; border-right: none; color: var(--text); text-align: center;
+            font-size: 16px; font-weight: 700; outline: none;
+        }
+
+        .dish-actions { display: flex; gap: 12px; }
+        .btn-order {
+            flex: 1; padding: 18px; background: var(--gold); color: var(--charcoal); border: none;
+            font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;
+            cursor: pointer; transition: 0.3s;
+        }
+        .btn-order:hover { background: var(--gold-light); }
+        .btn-dine {
+            flex: 1; padding: 18px; background: transparent; color: var(--text);
+            border: 1px solid rgba(201,169,110,0.3); font-size: 13px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: 0.3s;
+        }
+        .btn-dine:hover { border-color: var(--gold); color: var(--gold); }
+
+        /* Chef Note */
+        .chef-note {
+            margin-top: 30px; background: var(--charcoal-2); padding: 25px;
+            border-left: 3px solid var(--gold);
+        }
+        .chef-note h4 { font-family: 'Cormorant Garamond', serif; font-size: 20px; margin-bottom: 8px; color: var(--gold); }
+        .chef-note p { font-size: 14px; color: var(--text-muted); line-height: 1.7; font-style: italic; }
+
+        /* Similar Dishes */
+        .similar { padding: 80px 0; }
+        .similar h2 { font-family: 'Cormorant Garamond', serif; font-size: 32px; text-align: center; margin-bottom: 30px; }
+        .similar-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        .sim-card { text-decoration: none; color: var(--text); transition: 0.3s; }
+        .sim-card:hover { transform: translateY(-5px); }
+        .sim-img { height: 200px; overflow: hidden; margin-bottom: 12px; border: 1px solid rgba(201,169,110,0.1); }
+        .sim-img img { width: 100%; height: 100%; object-fit: cover; }
+        .sim-name { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; margin-bottom: 5px; }
+        .sim-price { color: var(--gold); font-weight: 700; font-size: 18px; }
+
+        footer { background: var(--charcoal-2); border-top: 1px solid rgba(201,169,110,0.1); padding: 40px 0; text-align: center; }
+        footer p { color: var(--text-muted); font-size: 12px; }
+
+        @media (max-width: 1024px) {
+            .dish-grid { grid-template-columns: 1fr; gap: 40px; }
+            .similar-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; } .mobile-toggle { display: flex; }
+            .dish-title { font-size: 30px; }
+            .dish-price { font-size: 28px; }
+            .dish-actions { flex-direction: column; }
+            .similar-grid { grid-template-columns: 1fr; max-width: 350px; margin: 0 auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">Umami<span>Quest</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="menu.html">Menu</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Gallery</a></li>
+                <li><a href="#" class="btn-reserve">Reserve</a></li>
+            </ul>
+            <div class="mobile-toggle"><span></span><span></span><span></span></div>
+        </div>
+    </nav>
+
+    <section class="breadcrumb-bar">
+        <div class="section-container">
+            <div class="breadcrumb">
+                <a href="index.html">Home</a> / <a href="menu.html">Menu</a> / Wagyu Beef Tenderloin
+            </div>
+        </div>
+    </section>
+
+    <section class="dish-detail">
+        <div class="section-container">
+            <div class="dish-grid">
+                <div class="dish-gallery">
+                    <div class="dish-main-img" id="mainDishImg">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=700&h=600&fit=crop" id="dishMainSrc" alt="Wagyu">
+                    </div>
+                    <div class="dish-thumbs">
+                        <div class="dish-thumb active" onclick="changeDish('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=700&h=600&fit=crop', this)">
+                            <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=120&h=100&fit=crop" alt="">
+                        </div>
+                        <div class="dish-thumb" onclick="changeDish('https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=700&h=600&fit=crop', this)">
+                            <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=120&h=100&fit=crop" alt="">
+                        </div>
+                        <div class="dish-thumb" onclick="changeDish('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=700&h=600&fit=crop', this)">
+                            <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=120&h=100&fit=crop" alt="">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dish-info">
+                    <div class="dish-cat">★ Chef's Signature • Main Course</div>
+                    <h1 class="dish-title">Wagyu Beef Tenderloin</h1>
+                    <div class="dish-rating">
+                        <span class="stars">★★★★★</span>
+                        <span class="count">4.9 (156 reviews)</span>
+                    </div>
+
+                    <div class="dish-price-box">
+                        <span class="dish-price">PKR 5,800</span>
+                    </div>
+
+                    <p class="dish-description">
+                        An exquisite A5-grade Wagyu beef tenderloin, pan-seared to perfection and rested for optimal juiciness. Served atop creamy truffle mashed potatoes with fresh grilled asparagus and a rich Bordeaux red wine reduction.
+                    </p>
+
+                    <div class="dish-details-list">
+                        <h3>Details</h3>
+                        <div class="detail-row"><span>Cuisine</span><span>Continental / French</span></div>
+                        <div class="detail-row"><span>Portion</span><span>300g Wagyu + sides</span></div>
+                        <div class="detail-row"><span>Preparation</span><span>25-30 minutes</span></div>
+                        <div class="detail-row"><span>Spice Level</span><span>Mild</span></div>
+                        <div class="detail-row"><span>Allergens</span><span>Dairy, Gluten</span></div>
+                        <div class="detail-row"><span>Calories</span><span>~680 kcal</span></div>
+                    </div>
+
+                    <div class="dish-options">
+                        <h3>Doneness</h3>
+                        <div class="option-btns">
+                            <button class="opt-btn">Rare</button>
+                            <button class="opt-btn active">Medium Rare</button>
+                            <button class="opt-btn">Medium</button>
+                            <button class="opt-btn">Well Done</button>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 25px;">
+                        <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 24px; margin-bottom: 15px;">Quantity</h3>
+                        <div class="dish-qty">
+                            <button class="qty-b" onclick="changeDishQty(-1)">−</button>
+                            <input type="number" class="qty-i" id="dQty" value="1" min="1">
+                            <button class="qty-b" onclick="changeDishQty(1)">+</button>
+                        </div>
+                    </div>
+
+                    <div class="dish-actions">
+                        <button class="btn-order" onclick="alert('Order placed! Estimated delivery: 45 mins')">🛒 Order Now — PKR 5,800</button>
+                        <button class="btn-dine" onclick="alert('Table reservation form opening...')">🍽️ Dine In</button>
+                    </div>
+
+                    <div class="chef-note">
+                        <h4>Chef's Note</h4>
+                        <p>"This is my personal favorite on the menu. The Wagyu comes from the finest farms in Japan. I recommend pairing it with our 2019 Château Margaux for the perfect dining experience."</p>
+                        <p style="margin-top: 8px; font-style: normal; font-weight: 600; color: var(--gold); font-size: 13px;">— Chef Marco Rossi</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="similar">
+        <div class="section-container">
+            <h2>You Might Also Enjoy</h2>
+            <div class="similar-grid">
+                <a href="dish-detail.html" class="sim-card">
+                    <div class="sim-img"><img src="https://images.unsplash.com/photo-1432139509613-5c4255a1d277?w=350&h=250&fit=crop" alt=""></div>
+                    <div class="sim-name">Pan-Seared Salmon</div>
+                    <div class="sim-price">PKR 4,500</div>
+                </a>
+                <a href="dish-detail.html" class="sim-card">
+                    <div class="sim-img"><img src="https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=350&h=250&fit=crop" alt=""></div>
+                    <div class="sim-name">Lobster Linguine</div>
+                    <div class="sim-price">PKR 4,200</div>
+                </a>
+                <a href="dish-detail.html" class="sim-card">
+                    <div class="sim-img"><img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=350&h=250&fit=crop" alt=""></div>
+                    <div class="sim-name">Truffle Quattro Formaggi</div>
+                    <div class="sim-price">PKR 3,200</div>
+                </a>
+                <a href="dish-detail.html" class="sim-card">
+                    <div class="sim-img"><img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=350&h=250&fit=crop" alt=""></div>
+                    <div class="sim-name">Chocolate Lava Cake</div>
+                    <div class="sim-price">PKR 1,500</div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="section-container"><p>© 2025 UmamiQuest. Crafted with love & flavor.</p></div>
+    </footer>
+
+    <script>
+        function changeDish(src, el) {
+            document.getElementById('dishMainSrc').src = src;
+            document.querySelectorAll('.dish-thumb').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+        }
+        function changeDishQty(d) {
+            const i = document.getElementById('dQty');
+            let v = parseInt(i.value) + d; if (v < 1) v = 1; i.value = v;
+        }
+        document.querySelectorAll('.opt-btn').forEach(b => {
+            b.addEventListener('click', function() {
+                document.querySelectorAll('.opt-btn').forEach(x => x.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
